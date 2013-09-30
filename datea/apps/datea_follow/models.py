@@ -246,7 +246,7 @@ class DateaHistoryReceiver(models.Model):
     user = models.ForeignKey(User)
 
     name = models.CharField(_('name'), max_length=255)
-    url = models.URLField(_('url'), verify_exists=False)
+    url = models.URLField(_('url'))
 
     content_type = models.ForeignKey(ContentType, null=True, blank=True, related_name="receiver_types")
     object_id = models.PositiveIntegerField(null=True, blank=True)
