@@ -1,28 +1,17 @@
-# Django settings for datea project.
+# -*- coding: utf-8 -*-
+from os.path import realpath, dirname, join
+PROJECT_PATH = realpath(join(dirname(__file__), '..'))
+APP_PATH = realpath(join(PROJECT_PATH, 'apps'))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 MAINTENANCE_MODE = False
 COMPRESS_ENABLED = True
 
-import os
-PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
-
-# local_settings.py can be used to override environment-specific settings
-# like database and email that differ between development and production.
-try:
-    from datea.local_settings import *
-except ImportError:
-    pass
-
-
-TEMPLATE_DEBUG = DEBUG
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
 }
-
-from datea.local_settings import DATABASES
 
 
 #add middelware path to sys path
@@ -69,7 +58,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+MEDIA_ROOT = join(PROJECT_PATH, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -80,7 +69,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
+STATIC_ROOT = join(PROJECT_PATH, 'static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -90,7 +79,7 @@ ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_PATH, 'site-static'),
+    join(PROJECT_PATH, 'site-static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -98,7 +87,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
     'compressor.finders.CompressorFinder',
 )
 
@@ -109,7 +98,7 @@ SECRET_KEY = 'vqxc=2-+e&amp;og%)zt@%w84c2i)ahjg+frx%7khu5*kq=_273eq8'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    #     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -149,12 +138,12 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_PATH, "templates"),
+    join(PROJECT_PATH, "templates"),
 )
 
 INSTALLED_APPS = (
-    
-    # standard 
+
+    # standard
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -166,7 +155,7 @@ INSTALLED_APPS = (
     'grappelli',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    
+
     # extensions
     #'debug_toolbar',
     'compressor',
@@ -180,29 +169,28 @@ INSTALLED_APPS = (
     #'easy_thumbnails',
     'sorl.thumbnail',
     'ckeditor',
-    
+
     # geodjango / location
     "django.contrib.gis",
     'olwidget',
     'haystack',
     'envelope',
     'honeypot',
-    
+
     # DATEA
-    'datea',
-    'datea.datea_home',
-    'datea.datea_image',
-    'datea.datea_category',
-    'datea.datea_channel',
-    'datea.datea_profile',
-    'datea.datea_action',
-    'datea.datea_mapping',
-    'datea.datea_vote',
-    'datea.datea_follow',
-    'datea.datea_api',
-    'datea.datea_comment',
-    'datea.datea_menu',
-    'datea.datea_blogfeed',
+    'datea_home',
+    'datea_image',
+    'datea_category',
+    'datea_channel',
+    'datea_profile',
+    'datea_action',
+    'datea_mapping',
+    'datea_vote',
+    'datea_follow',
+    'datea_api',
+    'datea_comment',
+    'datea_menu',
+    'datea_blogfeed',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -219,9 +207,9 @@ LOGGING = {
         }
     },
     'formatters': {
-            'simple':{
-                    'format': '%(levelname)S %(message)s'
-                }
+        'simple':{
+            'format': '%(levelname)S %(message)s'
+        }
         },
     'handlers': {
         'mail_admins': {
@@ -230,9 +218,9 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler'
         },
         'console':{
-                'level':'ERROR',
-                'class':'logging.StreamHandler',
-            }
+            'level':'ERROR',
+            'class':'logging.StreamHandler',
+        }
     },
     'loggers': {
         'django.request': {
@@ -267,7 +255,7 @@ AUTHENTICATION_BACKENDS = [
 
 AUTH_PROFILE_MODULE = 'datea_profile.DateaProfile'
 
-LOGIN_URL = "/accounts/login/" 
+LOGIN_URL = "/accounts/login/"
 #LOGIN_REDIRECT_URLNAME = "/" # CAMBIAR!
 #LOGOUT_REDIRECT_URLNAME = "/"
 
@@ -294,11 +282,11 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 
-ACCOUNT_ACTIVATION_DAYS = 7 
+ACCOUNT_ACTIVATION_DAYS = 7
 
 HONEYPOT_FIELD_NAME = 'phone'
 
-# EASY THUMBNAILS HAS PROBLEMS WITH TASTYPIE RELATED FIELDS OR DJANGO 1.4!!! 
+# EASY THUMBNAILS HAS PROBLEMS WITH TASTYPIE RELATED FIELDS OR DJANGO 1.4!!!
 #Thumbnails definitions
 #THUMBNAIL_ALIASES = {
 #    '': {
@@ -324,15 +312,9 @@ THUMBNAIL_PRESETS = {
     'marker_image': {'size':"x38", "options": {'format': 'PNG'}},
     'action_image': {'size': "110x110", 'options': {'crop': 'center'}}
 }
-DEFAULT_PROFILE_IMAGE = os.path.join(MEDIA_ROOT, 'default/img/default-user.png')
-DEFAULT_ACTION_IMAGE = os.path.join(MEDIA_ROOT, 'default/img/default-action.jpg')
+DEFAULT_PROFILE_IMAGE = join(MEDIA_ROOT, 'default/img/default-user.png')
+DEFAULT_ACTION_IMAGE = join(MEDIA_ROOT, 'default/img/default-action.jpg')
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1:11211',
-    }
-}
 
 COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter']
 #COMPRESS_JS_FILTERS = ['compressor.filters.jsmin.SlimItFilter']
@@ -342,7 +324,7 @@ COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter']
 
 
 #Ckeditor settings
-CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'uploads')
+CKEDITOR_UPLOAD_PATH = join(MEDIA_ROOT, 'uploads')
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'Full',
@@ -350,11 +332,3 @@ CKEDITOR_CONFIGS = {
         'width': 600,
     },
 }
-
-
-# local_settings.py can be used to override environment-specific settings
-# like database and email that differ between development and production.
-try:
-    from datea.local_settings import *
-except ImportError:
-    pass

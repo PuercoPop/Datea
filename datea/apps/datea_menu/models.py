@@ -10,7 +10,7 @@ class Item(models.Model) :
     url = models.CharField(max_length=100 )
     order = models.IntegerField(blank = True, null=True)
     visible = models.BooleanField(default=True)
-    
+
     def save(self, *args, **kwargs):
         model = self.__class__
         if self.order is None:
@@ -28,19 +28,17 @@ class Item(models.Model) :
 
     def __unicode__(self):
         return self.name
-    
+
 
 
 class DateaMenuItem(MPTTModel):
     name = models.CharField(_('Menu title'), max_length=50)
     page_title = models.CharField(_('Page title'), max_length=150, null=True, blank=True)
     visible = models.BooleanField(_('Visible'), default=True)
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')  
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
     page = models.ForeignKey(FlatPage, verbose_name=_('Page'), blank=True, null=True)
     menu_root_id = models.SlugField(_('Menu root id'), null=True, blank=True, help_text=_("String to identify this menu to the datea_menu template tags"))
     external_url = models.CharField(_('External url'), null=True, blank=True, max_length=300)
-    
+
     def __unicode__(self):
-        return self.name 
-    
-    
+        return self.name

@@ -8,15 +8,17 @@ admin.autodiscover()
 
 #API resources
 from datea_api.auth import Accounts
-from datea_api.profile import ProfileResource,UserResource
-from datea_api.mapping import MappingResource, MappingFullResource, MapItemResource,MapItemResponseResource
+from datea_api.profile import ProfileResource, UserResource
+from datea_api.mapping import (MappingResource, MappingFullResource,
+        MapItemResource, MapItemResponseResource, )
 from datea_api.category import FreeCategoryResource, CategoryResource
 from datea_api.vote import VoteResource
 from datea_api.image import ImageResource
 from datea_api.action import ActionResource
 from datea_api.contenttypes import ContentTypeResource
 from datea_api.comment import CommentResource
-from datea_api.follow import FollowResource,HistoryResource,NotifySettingsResource
+from datea_api.follow import (FollowResource, HistoryResource,
+        NotifySettingsResource, )
 from envelope.views import ContactView
 from django.views.generic import TemplateView
 
@@ -49,8 +51,8 @@ urlpatterns = patterns('',
     url(r'^', include('datea.datea_action.urls')),
     url(r'^', include('datea.datea_mapping.urls')),
     url(r'^', include('datea.datea_profile.urls')),
-    
-    url(r'^api/',include(v1_api.urls)),
+
+    url(r'^api/', include(v1_api.urls)),
     url(r"image/", include('datea.datea_image.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
@@ -61,16 +63,16 @@ urlpatterns = patterns('',
     (r'^grappelli/', include('grappelli.urls')),
     url(r'', include('social_auth.urls')),
     (r'^accounts/', include('registration.backends.default.urls')),
-   
+
     url(r"png/", include('datea.datea_mapping.urls')),
-    
+
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-    
+
     #wysiwyg editor
     (r'^ckeditor/', include('ckeditor.urls')),
-    
+
     url(r'^contact/$', ContactView.as_view(success_url="/contact/success/"), name='envelope-contact'),
-    
+
     (r'^contact/success/$',  TemplateView.as_view(template_name="envelope/success.html"))
 )
 
@@ -80,5 +82,5 @@ if settings.DEBUG:
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
     url(r'', include('django.contrib.staticfiles.urls')),
-    
+
 ) + urlpatterns
