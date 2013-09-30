@@ -1,5 +1,5 @@
-from datea.datea_comment.models import DateaComment
-from datea.datea_mapping.models import DateaMapItem
+from datea_comment.models import DateaComment
+from datea_mapping.models import DateaMapItem
 
 from django.db.models.signals import pre_delete
 

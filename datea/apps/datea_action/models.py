@@ -5,6 +5,7 @@ from django.core.files.base import ContentFile
 from django.conf import settings
 from django.contrib.gis.db import models
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext

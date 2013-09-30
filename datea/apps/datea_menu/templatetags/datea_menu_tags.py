@@ -1,5 +1,5 @@
 from django import template
-from datea.datea_menu.models import DateaMenuItem
+from datea_menu.models import DateaMenuItem
 
 register = template.Library()
 
@@ -10,7 +10,7 @@ def get_menu(menu_root_id):
         items = list(root.get_children().filter(visible=True))
     except:
         items = []
-    
+
     for i in items:
         if i.page:
             i.url = i.page.url
@@ -18,5 +18,5 @@ def get_menu(menu_root_id):
             i.url = i.external_url
         else:
             i.url = ''
-        
+
     return items

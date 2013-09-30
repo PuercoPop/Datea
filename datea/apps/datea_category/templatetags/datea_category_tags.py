@@ -1,6 +1,6 @@
 from django import template
-from datea.datea_category.models import DateaCategory
-from datea.datea_category.forms import DateaFreeCategoryForm
+from datea_category.models import DateaCategory
+from datea_category.forms import DateaFreeCategoryForm
 
 register = template.Library()
 

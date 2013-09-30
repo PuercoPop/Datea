@@ -1,8 +1,8 @@
 from django import template
-from datea.datea_blogfeed.feed_functions import get_feed_entries
+from datea_blogfeed.feed_functions import get_feed_entries
 from time import mktime
 from datetime import datetime
-from django.conf import settings 
+from django.conf import settings
 
 register = template.Library()
 
@@ -16,4 +16,3 @@ def get_blogfeed_block(num_entries):
             'blog_name': settings.BLOG_NAME,
             'blog_url': settings.BLOG_URL,
             }
-

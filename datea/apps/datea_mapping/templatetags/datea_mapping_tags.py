@@ -1,6 +1,6 @@
 from django import template
-from datea.datea_mapping.models import DateaMapping
-from datea.datea_mapping.forms import DateaMappingForm, DateaMapItemForm, DateaMapItemResponseForm
+from datea_mapping.models import DateaMapping
+from datea_mapping.forms import DateaMappingForm, DateaMapItemForm, DateaMapItemResponseForm
 
 register = template.Library()
 

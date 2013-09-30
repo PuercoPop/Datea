@@ -1,5 +1,5 @@
 from tastypie.resources import ModelResource
-from datea.datea_image.models import DateaImage
+from datea_image.models import DateaImage
 from api_base import ApiKeyPlusWebAuthentication, DateaBaseAuthorization, DateaBaseResource
 
 class ImageResource(DateaBaseResource):

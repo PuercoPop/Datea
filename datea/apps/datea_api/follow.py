@@ -1,21 +1,21 @@
 from tastypie import fields
 from tastypie.bundle import Bundle
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
-from datea.datea_follow.models import DateaFollow, DateaHistory, DateaHistoryReceiver, DateaNotifySettings
+from datea_follow.models import DateaFollow, DateaHistory, DateaHistoryReceiver, DateaNotifySettings
 from api_base import DateaBaseResource, ApiKeyPlusWebAuthentication, DateaBaseAuthorization
 from tastypie.cache import SimpleCache
 from tastypie.throttle import BaseThrottle
 
 class FollowResource(DateaBaseResource):
-    
-    #user = fields.ToOneField('datea.datea_api.profile.UserResource', 
+
+    #user = fields.ToOneField('datea.datea_api.profile.UserResource',
     #        attribute='user', full=False, readonly=True)
-    
+
     def hydrate(self,bundle):
         if bundle.request.method == 'POST':
-            bundle.obj.user = bundle.request.user  
+            bundle.obj.user = bundle.request.user
         return bundle
-     
+
     class Meta:
         queryset = DateaFollow.objects.all()
         resource_name = 'follow'
@@ -31,19 +31,19 @@ class FollowResource(DateaBaseResource):
         authorization = DateaBaseAuthorization()
         limit = 50
         always_return_data = True
-        
-        
+
+
 class HistoryResource(DateaBaseResource):
-    
-    receiver_items = fields.ToManyField('datea.datea_api.follow.HistoryReceiverResource', 
+
+    receiver_items = fields.ToManyField('datea.datea_api.follow.HistoryReceiverResource',
             attribute="receiver_items",related_name='receiver_items', full=True, readonly=True)
-    
+
     def dehydrate(self, bundle):
         bundle.data['username'] = bundle.obj.user.username
         bundle.data['user_url'] = bundle.obj.user.profile.get_absolute_url()
         bundle.data['user_image'] = bundle.obj.user.profile.get_small_image()
         return bundle
-    
+
     def apply_filters(self, request, applicable_filters):
         if hasattr(request, 'GET'):
             if 'following_user' in request.GET:
@@ -53,11 +53,11 @@ class HistoryResource(DateaBaseResource):
                 applicable_filters['user__pk'] = request.GET['user_id']
         #return self.get_object_list(request).filter(**applicable_filters)
         return super(HistoryResource, self).apply_filters(request, applicable_filters)
-    
+
     def apply_sorting(self, obj_list, options=None):
         return obj_list.distinct('created','history_key').order_by('-created','history_key')
         #return super(HistoryResource, self).apply_sorting(obj_list, options)
-    
+
     class Meta:
         queryset= DateaHistory.objects.all()
         resource_name= 'history'
@@ -75,30 +75,30 @@ class HistoryResource(DateaBaseResource):
                      }
         limit = 20
         cache = SimpleCache(timeout=10)
-        
-        
+
+
 class HistoryReceiverResource(DateaBaseResource):
-    
+
     def dehydrate(self, bundle):
         del bundle.data['resource_uri']
         return bundle
-    
+
     class Meta:
         queryset = DateaHistoryReceiver.objects.filter(published=True)
         allowed_methods = ['get']
         fields = ['name', 'url']
-        
+
 
 class NotifySettingsResource(DateaBaseResource):
-    
+
     def hydrate(self,bundle):
         if bundle.request.method == 'PUT':
             #preserve original owner
             orig_object = DateaNotifySettings.objects.get(pk=bundle.data['id'])
             bundle.obj.user = orig_object.user
-            
+
         return bundle
-    
+
     class Meta:
         queryset = DateaNotifySettings.objects.all()
         resource_name = 'notify_settings'
@@ -110,6 +110,3 @@ class NotifySettingsResource(DateaBaseResource):
         authentication = ApiKeyPlusWebAuthentication()
         authorization = DateaBaseAuthorization()
         always_return_data = True
-        
-    
-        

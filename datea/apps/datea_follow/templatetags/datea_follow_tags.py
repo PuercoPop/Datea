@@ -1,6 +1,6 @@
-from datea.datea_follow.models import DateaFollow 
-from datea.datea_api.follow import NotifySettingsResource, FollowResource
-from datea.datea_follow.forms import DateaNotifySettingsForm 
+from datea_follow.models import DateaFollow
+from datea_api.follow import NotifySettingsResource, FollowResource
+from datea_follow.forms import DateaNotifySettingsForm
 from django import template
 
 register = template.Library()
@@ -8,7 +8,7 @@ register = template.Library()
 @register.simple_tag(takes_context=True)
 def get_user_follows(context):
     request = context['request']
-    
+
     # follow keys
     follows = []
     follow_rsc = FollowResource()
@@ -16,7 +16,7 @@ def get_user_follows(context):
         f_bundle = follow_rsc.build_bundle(obj=f)
         f_bundle = follow_rsc.full_dehydrate(f_bundle)
         follows.append(follow_rsc.serialize(None, f_bundle, 'application/json'))
-        
+
     return '['+",".join(follows)+']'
 
 

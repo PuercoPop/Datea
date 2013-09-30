@@ -6,7 +6,7 @@ from mptt.fields import TreeForeignKey
 from django.contrib.auth.models import User
 #from easy_thumbnails.files import get_thumbnailer
 
-from datea.datea_image.models import DateaImage 
+from datea_image.models import DateaImage 
 
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
