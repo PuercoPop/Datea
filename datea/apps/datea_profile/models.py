@@ -1,14 +1,20 @@
+# -*- coding: utf-8 -*-
+from sorl.thumbnail import get_thumbnail
+
+#from easy_thumbnails.files import get_thumbnailer
+
+
+
 from django.db import models
+from django.core.files.base import ContentFile
+from django.contrib.auth.models import User
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
-from django.contrib.auth.models import User
 
 from datea_image.models import DateaImage
 from datea_action.models import DateaAction
-#from easy_thumbnails.files import get_thumbnailer
-from sorl.thumbnail import get_thumbnail
-from django.core.files.base import ContentFile
-from django.conf import settings
+
 
 
 class DateaProfile(models.Model):

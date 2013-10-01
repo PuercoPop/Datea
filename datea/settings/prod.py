@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+from os import getenv
+
+
+SECRET_KEY = getenv('DATEA_SK')
 
 CACHES = {
     'default': {

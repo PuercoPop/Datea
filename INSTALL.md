@@ -28,4 +28,5 @@ pip install -r requirements.txt
 
 ## Setup the database
 python manage.py syncdb --settings settings.dev
+python manage.py migrate datea_action --settings settings.dev
 python manage.py migrate --settings settings.dev
