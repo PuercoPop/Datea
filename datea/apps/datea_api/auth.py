@@ -1,22 +1,21 @@
+# -*- coding: utf-8 -*-
+from tastypie.resources import ModelResource
+from tastypie.utils import trailing_slash
+from oauth2 import Client as OAuthClient, Consumer as OAuthConsumer, Token
+from social_auth.backends.twitter import TWITTER_CHECK_AUTH
+from social_auth.models import UserSocialAuth
+from registration.backends.default.views import RegistrationView
+
 from django.conf.urls.defaults import url
 from django.contrib.auth.models import User
 from django.utils import simplejson
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import PasswordResetForm
-from django.conf.settings import TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET
+from django.conf import settings
 
-from tastypie.resources import ModelResource
-from tastypie.utils import trailing_slash
-
-from oauth2 import Client as OAuthClient, Consumer as OAuthConsumer, Token
-
-from social_auth.backends.twitter import TWITTER_CHECK_AUTH
-from social_auth.models import UserSocialAuth
-
-from registration.backends import get_backend
-
-from utils import getOrCreateKey, getUserByKey
-from status_codes import *
+from .utils import getOrCreateKey, getUserByKey
+from .status_codes import (OK, CREATED, BAD_REQUEST, UNAUTHORIZED,
+                           FORBIDDEN, NOT_FOUND, SYSTEM_ERROR, )
 from datea_profile.utils import make_social_username
 
 END_POINT_NAME = 'accounts'
@@ -52,7 +51,6 @@ class Accounts(ModelResource):
         #print "@ create account"
         self.method_check(request, allowed=['post'])
 
-        backend = get_backend('registration.backends.default.DefaultBackend')
         postData = simplejson.loads(request.raw_post_data)
 
         args = {'username':postData['username'],
@@ -64,19 +62,18 @@ class Accounts(ModelResource):
                     'status': SYSTEM_ERROR,
                     'error': 'duplicate email'})
 
-        #print "post data"
-        #print args
-        #print "trying to create account"
-        newUser = backend.register(request,**args)
+        new_user = RegistrationView.register(request,**args)
 
-        #print "user created"
-        if newUser:
-            return self.create_response(request,{'status': OK,
-                'message': 'Please check your email !!'})
+        if new_user:
+            return self.create_response(
+                request,
+                {'status': OK,
+                 'message': 'Please check your email !!'})
 
         else:
-            return self.create_response(request,{'status': SYSTEM_ERROR,
-                                    'error': 'Something is wrong >:/ '})
+            return self.create_response(request,
+                                        {'status': SYSTEM_ERROR,
+                                         'error': 'Something is wrong >:/ '})
 
 
     def signin(self, request, **kwargs):
@@ -92,13 +89,14 @@ class Accounts(ModelResource):
         if user is not None:
             if user.is_active:
                 key = getOrCreateKey(user)
-                return self.create_response(request,{'status':OK,
-                                                    'token': key,
-                                                    'userid': user.id
-                                                    })
+                return self.create_response(request,
+                                            {'status':OK,
+                                             'token': key,
+                                             'userid': user.id, })
             else:
-                return self.create_response(request,{'status':FORBIDDEN,
-                                                    'error': 'Account disabled'})
+                return self.create_response(request,
+                                            {'status':FORBIDDEN,
+                                             'error': 'Account disabled', })
         else:
             return self.create_response(request,{'status':UNAUTHORIZED,
                                                 'error':'Wrong user name and password'})
@@ -150,8 +148,8 @@ class Accounts(ModelResource):
                                                 'token':key})
         except UserSocialAuth.DoesNotExist:
             #verify credentials against twitter API
-            consumer = OAuthConsumer(TWITTER_CONSUMER_KEY,
-                    TWITTER_CONSUMER_SECRET)
+            consumer = OAuthConsumer(settings.TWITTER_CONSUMER_KEY,
+                                     settings.TWITTER_CONSUMER_SECRET)
             uToken = Token(token, tokenSecret)
             client = OAuthClient(consumer,uToken)
             res, content = client.request(TWITTER_CHECK_AUTH, "GET")
@@ -160,16 +158,16 @@ class Accounts(ModelResource):
                 #credentials aproved
                 contentJson = simplejson.loads(content)
                 finalName = make_social_username(contentJson['screen_name'])
-                newUser = User.objects.create_user(username=finalName,
+                new_user = User.objects.create_user(username=finalName,
                                                     email="")
                 extraData = simplejson.dumps({u'access_token':u'oauth_token_secret=%s&oauth_token=%s',u'id': twId}) % (token, tokenSecret)
 
-                newSocialU = UserSocialAuth.objects.create(user=newUser,
+                newSocialU = UserSocialAuth.objects.create(user=new_user,
                                                 provider='twitter',
                                                 uid=twId,
                                                 extra_data= extraData)
                 newSocialU.save()
-                key = getOrCreateKey(newUser)
+                key = getOrCreateKey(new_user)
                 return self.create_response(request,{'status':OK,
                                                     'token':key})
             else:
