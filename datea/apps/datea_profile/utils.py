@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
@@ -5,7 +7,7 @@ def make_social_username(username):
     index = 0
     username = slugify(username)
     final_username = username
-    
+
     while True:
         try:
             if index != 0:

@@ -3,8 +3,6 @@ from sorl.thumbnail import get_thumbnail
 
 #from easy_thumbnails.files import get_thumbnailer
 
-
-
 from django.db import models
 from django.core.files.base import ContentFile
 from django.contrib.auth.models import User

@@ -1,7 +1,7 @@
+# -*- coding: utf-8 -*-
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from tastypie.api import Api
-
 
 from django.contrib import admin
 admin.autodiscover()
@@ -10,7 +10,7 @@ admin.autodiscover()
 from datea_api.auth import Accounts
 from datea_api.profile import ProfileResource, UserResource
 from datea_api.mapping import (MappingResource, MappingFullResource,
-        MapItemResource, MapItemResponseResource, )
+                               MapItemResource, MapItemResponseResource, )
 from datea_api.category import FreeCategoryResource, CategoryResource
 from datea_api.vote import VoteResource
 from datea_api.image import ImageResource
@@ -18,7 +18,7 @@ from datea_api.action import ActionResource
 from datea_api.contenttypes import ContentTypeResource
 from datea_api.comment import CommentResource
 from datea_api.follow import (FollowResource, HistoryResource,
-        NotifySettingsResource, )
+                              NotifySettingsResource, )
 from envelope.views import ContactView
 from django.views.generic import TemplateView
 
@@ -45,15 +45,16 @@ js_info_dict = {
     'packages': ('datea',),
 }
 
-urlpatterns = patterns('',
-    url(r'^$', 'datea.datea_home.views.home', name='home'),
-    #url(r'^(?P<path>[a-z0-9-/]+)', 'datea.datea_home.views.redirect_to_hash'),
-    url(r'^', include('datea.datea_action.urls')),
-    url(r'^', include('datea.datea_mapping.urls')),
-    url(r'^', include('datea.datea_profile.urls')),
+urlpatterns = patterns(
+    '',
+    url(r'^$', 'datea_home.views.home', name='home'),
+    #url(r'^(?P<path>[a-z0-9-/]+)', 'datea_home.views.redirect_to_hash'),
+    url(r'^', include('datea_action.urls')),
+    url(r'^', include('datea_mapping.urls')),
+    url(r'^', include('datea_profile.urls')),
 
     url(r'^api/', include(v1_api.urls)),
-    url(r"image/", include('datea.datea_image.urls')),
+    url(r"image/", include('datea_image.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -64,23 +65,27 @@ urlpatterns = patterns('',
     url(r'', include('social_auth.urls')),
     (r'^accounts/', include('registration.backends.default.urls')),
 
-    url(r"png/", include('datea.datea_mapping.urls')),
+    url(r"png/", include('datea_mapping.urls')),
 
-    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
+    url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict,
+        name='js_i18n', ),
 
     #wysiwyg editor
-    (r'^ckeditor/', include('ckeditor.urls')),
+    url(r'^ckeditor/', include('ckeditor.urls')),
 
-    url(r'^contact/$', ContactView.as_view(success_url="/contact/success/"), name='envelope-contact'),
+    url(r'^contact/$', ContactView.as_view(success_url="/contact/success/"),
+        name='envelope-contact'),
 
-    (r'^contact/success/$',  TemplateView.as_view(template_name="envelope/success.html"))
+    url(r'^contact/success/$',
+        TemplateView.as_view(template_name="envelope/success.html"))
 )
 
 
 if settings.DEBUG:
-    urlpatterns = patterns('',
-    url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
-    url(r'', include('django.contrib.staticfiles.urls')),
+    urlpatterns = patterns(
+        '',
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+            {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+        url(r'', include('django.contrib.staticfiles.urls')),
 
-) + urlpatterns
+    ) + urlpatterns

@@ -22,13 +22,13 @@ register = template.Library()
 class VerbatimNode(template.Node):
     def __init__(self, text_and_nodes):
         self.text_and_nodes = text_and_nodes
-    
+
     def render(self, context):
         output = ""
 
         # If its text we concatenate it, otherwise it's a node and we render it
         for bit in self.text_and_nodes:
-            if isinstance(bit, basestring): 
+            if isinstance(bit, basestring):
                 output += bit
             else:
                 output += bit.render(context)
@@ -65,10 +65,10 @@ def verbatim(parser, token):
             except template.TemplateSyntaxError, e:
                 if not parser.compile_function_error(token, e):
                     raise
-        
+
             text_and_nodes.append(node)
 
         if token.token_type == template.TOKEN_VAR:
             text_and_nodes.append('}}')
-           
+
     return VerbatimNode(text_and_nodes)

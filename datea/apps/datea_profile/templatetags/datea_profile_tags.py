@@ -1,11 +1,13 @@
+# -*- coding: utf-8 -*-
+import re
 
 from django import template
-import re
-from datea_api.profile import UserResource
 from django.utils import simplejson
 from django.utils.translation import ugettext as _
-from datea_image.utils import get_image_thumb
 from django.conf import settings
+
+from datea_api.profile import UserResource
+from datea_image.utils import get_image_thumb
 
 register = template.Library()
 
@@ -27,11 +29,11 @@ def get_login_target(context):
         if referer[0] == request.META.get('HTTP_HOST') and len(referer) > 1:
             target = "/"+"/".join(referer[1:])
 
-    if target in ['/accounts/login/','/accounts/signup/', '/accounts/password_reset/', '/accounts/logout/','/', '']:
+    if target in ['/accounts/login/', '/accounts/signup/',
+                  '/accounts/password_reset/', '/accounts/logout/', '/', '']:
         target = '/'
 
     return target
-
 
 
 @register.simple_tag(takes_context=True)
@@ -52,11 +54,13 @@ def get_user_resource(context):
     else:
         img_url = settings.DEFAULT_PROFILE_IMAGE
         user_data = {
-            'username': _('anonimous'),
+            'username': _('anonymous'),
             'profile': {
-                'image_small': get_image_thumb(img_url, 'profile_image_small').url,
+                'image_small': get_image_thumb(img_url,
+                                               'profile_image_small').url,
                 'image': get_image_thumb(img_url, 'profile_image').url,
-                'image_large': get_image_thumb(img_url, 'profile_image_large').url,
+                'image_large': get_image_thumb(img_url,
+                                               'profile_image_large').url,
             }
         }
         user_json = simplejson.dumps(user_data)

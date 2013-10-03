@@ -1,10 +1,11 @@
-from django.contrib.auth.models import User
+# -*- coding: utf-8 -*-
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication
-from api_base import DateaBaseResource, ApiKeyPlusWebAuthentication, DateaBaseAuthorization
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
+
+from django.contrib.auth.models import User
 from django.conf.urls.defaults import url
 
 from datea_action.models import DateaAction
@@ -13,6 +14,8 @@ from datea_follow.models import DateaFollow
 from datea_api.follow import FollowResource
 from datea_vote.models import DateaVote
 from datea_api.vote import VoteResource
+from .api_base import (DateaBaseResource, ApiKeyPlusWebAuthentication,
+                       DateaBaseAuthorization, )
 
 from datea_profile.models import DateaProfile
 

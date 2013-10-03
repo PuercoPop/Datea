@@ -5,11 +5,16 @@ django-tastypie
 
 PIL
 sorl-thumbnail
+pysolr
+mimeparse
+svgwrite
+unicodecsv
 
 geopy
 
 django-extensions
 django-debug-toolbar
+feedparser
 
 django-appconf
 django-bootstrap-toolkit

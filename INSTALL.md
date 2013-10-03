@@ -1,5 +1,5 @@
 
-## Install Postgis[ref](https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/postgis/)
+## Install Postgis [1](https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/postgis/)
 
 Set POSTGIS_SQL_PATH to the directory where Postgis was installed. ie. POSTGIS_SQL_PATH=`pg_config --sharedir`/contrib/postgis-2.0
 ```bash
@@ -27,6 +27,8 @@ pip install -r requirements.txt
 ```
 
 ## Setup the database
+```bash
 python manage.py syncdb --settings settings.dev
 python manage.py migrate datea_action --settings settings.dev
 python manage.py migrate --settings settings.dev
+```
