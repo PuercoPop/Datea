@@ -1,5 +1,5 @@
-{% load i18n %}
-{% verbatim %}
+{% load i18n handlebars %}
+{% handlebars %}
 <script id="image_carousel_tpl" type="text/html">
   <div class="carousel-inner">
   </div>
@@ -45,5 +45,4 @@
     <a class="right carousel-control" data-slide="next" href="#{{ carousel_id }}">›</a>
   </div>
 </script>
-
-{% endverbatim %}
+{% endhandlebars %}

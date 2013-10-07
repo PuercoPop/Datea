@@ -1,5 +1,5 @@
-{% load i18n datea_menu_tags %}
-{% verbatim %}
+{% load i18n datea_menu_tags handlebars %}
+{% handlebars %}
 <script id="datea_presentation_tpl" type="text/html">
   <div id="presentation-wrapper">
     <div class="inner container">
@@ -55,7 +55,7 @@
 
           <div class="login-bubble">
             <div class="reg-link">{% trans 'no account yet?' %}</div>
-            <a class="btn btn-pointy btn-uppercase btn-large" href="{% url registration_register %}">
+            <a class="btn btn-pointy btn-uppercase btn-large" href="{% url 'registration_register' %}">
               {% trans "Register" %}<div class="pointer">&nbsp;</div>
             </a>
             <div class="esquina">&nbsp;</div>
@@ -98,4 +98,4 @@
 
   </div>
 </script>
-{% endverbatim %}
+{% endhandlebars %}

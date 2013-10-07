@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 jQuery templates use constructs like:
 
@@ -13,13 +14,12 @@ to output the contents with no changes.
 This version of verbatim template tag allows you to use tags
 like url {% url name %} or {% csrf_token %} within.
 """
-
 from django import template
 
 register = template.Library()
 
 
-class VerbatimNode(template.Node):
+class HandlebarsNode(template.Node):
     def __init__(self, text_and_nodes):
         self.text_and_nodes = text_and_nodes
 
@@ -35,12 +35,13 @@ class VerbatimNode(template.Node):
 
         return output
 
+
 @register.tag
-def verbatim(parser, token):
+def handlebars(parser, token):
     text_and_nodes = []
     while 1:
         token = parser.tokens.pop(0)
-        if token.contents == 'endverbatim':
+        if token.contents == 'endhandlebars':
             break
 
         if token.token_type == template.TOKEN_VAR:
@@ -71,4 +72,4 @@ def verbatim(parser, token):
         if token.token_type == template.TOKEN_VAR:
             text_and_nodes.append('}}')
 
-    return VerbatimNode(text_and_nodes)
+    return HandlebarsNode(text_and_nodes)

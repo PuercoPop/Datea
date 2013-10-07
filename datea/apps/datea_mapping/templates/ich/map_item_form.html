@@ -1,9 +1,8 @@
-{% load i18n datea_category_tags datea_mapping_tags bootstrap_toolkit %}
+{% load i18n datea_category_tags datea_mapping_tags bootstrap_toolkit handlebars %}
 {% get_mapping_form as form %}
-
+{% handlebars %}
 {# MAP ITEM FORM BASE #}
 <script id="map_item_form_tpl" type="text/html">
-  {% verbatim %}
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">×</button>
     <h3>{{action_name}} {% trans "report" %}</h3>
@@ -66,7 +65,7 @@
               <a class="open-step no-location" data-step="3" href="#">{% trans "has no location" %} <i class="icon-arrow-right"></i></a>
               <form id="search-location-form" class="form search-form">
                 <input type="text" class="input-medium search-query search-address" name="search_location" placeholder="{% trans 'search location' %}" />
-                <button type="submit" class="btn btn-small"><img src="{% endverbatim %}{{STATIC_URL}}{% verbatim %}img/datea/lupa.png" alt="" /></button>
+                <button type="submit" class="btn btn-small"><img src="{% endhandlebars %}{{STATIC_URL}}{% handlebars %}img/datea/lupa.png" alt="" /></button>
               </form>
             </div>
             <div class="step-title"><strong>{% trans "Step" %} 2:</strong> {% trans "locate your report" %}</div>
@@ -103,15 +102,12 @@
       </div>
     </div>
   </div>
-
-  {% endverbatim %}
 </script>
 
 
 
 {# VERIFY FORM #}
 <script id="map_item_form_verify_tpl" type="text/html">
-  {% verbatim %}
   {{#category}}
     <div class="verify-item category">
       <span class="badge" style="background-color:{{category.color}};">{{category.name}}</span>
@@ -129,13 +125,11 @@
       {{> map_item_form_verify_image_tpl}}
     {{/images}}
   </div>
-  {% endverbatim %}
 </script>
 
 
 {# VERIFY IMAGE #}
 <script id="map_item_form_verify_image_tpl" type="text/html">
-  {% verbatim %}
   {{#thumb}}
     <div class="verify-image">
       <span class="thumb">
@@ -146,13 +140,11 @@
       </span>
     </div>
   {{/thumb}}
-  {% endverbatim %}
 </script>
 
 
 {# FORM SUCCESS TEMPLATE #}
 <script id="map_item_form_success_tpl" type="text/html">
-  {% verbatim %}
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">×</button>
     <h3>{% trans "Thank you!" %}</h3>
@@ -185,7 +177,6 @@
   <div class="modal-footer">
     <a href="#{{ url }}" class="btn btn-primary btn-large close-modal">{% trans 'See my report' %}</a>
   </div>
-  {% endverbatim %}
 </script>
 
 {# MAP ITEM DELETE DIALOG #}
@@ -204,3 +195,4 @@
     <button type="button" class="btn btn-large btn-danger delete-map-item">{% trans "delete" %}</button>
   </div>
 </script>
+{% endhandlebars %}

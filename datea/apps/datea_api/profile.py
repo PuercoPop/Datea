@@ -19,6 +19,7 @@ from .api_base import (DateaBaseResource, ApiKeyPlusWebAuthentication,
 
 from datea_profile.models import DateaProfile
 
+
 class ProfileResource(DateaBaseResource):
 
     #user = fields.ToOneField('datea.datea_api.profile.UserResource',
@@ -45,7 +46,8 @@ class ProfileResource(DateaBaseResource):
         if 'image_large' in bundle.data:
             del bundle.data['image_large']
 
-        # leave image foreign keys to images untouched (must be edited through other methods)
+        # leave image foreign keys to images untouched
+        # (must be edited through other methods)
         if 'id' in bundle.data and bundle.data['id']:
             profile = DateaProfile.objects.get(pk=bundle.data['id'])
             bundle.obj.image_social = profile.image_social
@@ -57,24 +59,23 @@ class ProfileResource(DateaBaseResource):
         queryset = DateaProfile.objects.all()
         resource_name = 'profile'
         list_allowed_methods = ['get']
-        allowed_methods = ['get','post','put', 'delete']
+        allowed_methods = ['get', 'post', 'put', 'delete', ]
         authentication = ApiKeyPlusWebAuthentication()
         authorization = DateaBaseAuthorization()
         filtering = {
             'user': ALL_WITH_RELATIONS,
         }
-        exclude = ['image','image_social', 'created']
+        exclude = ['image', 'image_social', 'created']
         always_return_data = True
-
 
 
 class UserResource(DateaBaseResource):
 
-
-    profile = fields.ToOneField('datea.datea_api.profile.ProfileResource',
-            attribute='profile',
-            full=True,
-            null=True)
+    profile = fields.ToOneField(
+        'datea_api.profile.ProfileResource',
+        attribute='profile',
+        full=True,
+        null=True)
 
     def dehydrate(self, bundle):
         bundle.data['url'] = bundle.obj.profile.get_absolute_url()
@@ -127,21 +128,16 @@ class UserResource(DateaBaseResource):
     def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/(?P<pk>[0-9]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
-            url(r"^(?P<resource_name>%s)/(?P<username>[\w\d\ _.-]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
-        ]
+            url(r"^(?P<resource_name>%s)/(?P<username>[\w\d\ _.-]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"), ]
 
     class Meta:
         queryset = User.objects.all()
         resource_name = 'user'
-        fields = ['username', 'id','date_joined', 'last_login', 'created']
-        filtering = {
-                'username':ALL
-                }
-        allowed_methods = ['get', 'put', 'delete']
+        fields = ['username', 'id', 'date_joined', 'last_login', 'created']
+        filtering = {'username': ALL, }
+        allowed_methods = ['get', 'put', 'delete', ]
         authentication = ApiKeyPlusWebAuthentication()
         authorization = DateaBaseAuthorization()
-        filtering = {
-            'username': ALL,
-            'id': ALL,
-        }
+        filtering = {'username': ALL,
+                     'id': ALL, }
         always_return_data = True
